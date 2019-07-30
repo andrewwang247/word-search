@@ -1,6 +1,4 @@
 #include "chargrid.h"
-#include <string>
-#include <fstream>
 #include <exception>
 using namespace std;
 
