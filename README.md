@@ -8,4 +8,10 @@ Suggested usage: ./wordsearch word_grid.txt < target_words.txt > results.txt
 The CharGrid is a two-dimensional array of characters that holds the search space.
 The program iterates over each character in the array and looks in the 8 compass directions for matches.
 Should it find a match, it highlights that word and logs the hit in a vector.
-Finally, the program prints out all matches that were found in a neat format.
+Finally, the program prints all matches that were found to std::cout.
+If any runtime errors are encountered, exceptions will be thrown and the program terminated.
+
+## Format
+
+1. The input grid text file must be a rectangular character grid. All white spaces except new-lines are ignored.
+2. For the list of words piped into std::cin, I recommend using a text file where each word is on its own line. Valid words may include non-alphabetic characters may be included - they are ignored by the search.
