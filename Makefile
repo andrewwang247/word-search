@@ -8,11 +8,11 @@ EXECUTABLE = wordsearch
 OBJECTFILES = chargrid.cpp
 
 # Build optimized executable.
-release : $(EXECUTABLE).cpp
+release : $(EXECUTABLE).cpp $(OBJECTFILES)
 	$(CXX) $(CXX_FLAGS) $(OPT) $(EXECUTABLE).cpp $(OBJECTFILES) -o $(EXECUTABLE)
 
 # Build with debug features.
-debug : $(EXECUTABLE).cpp
+debug : $(EXECUTABLE).cpp $(OBJECTFILES)
 	$(CXX) $(CXX_FLAGS) $(DEBUG) $(EXECUTABLE).cpp $(OBJECTFILES) -o $(EXECUTABLE)_debug
 
 
