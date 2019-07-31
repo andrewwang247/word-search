@@ -26,7 +26,8 @@ CharGrid::CharGrid(ifstream& fin) {
 }
 
 void CharGrid::check(string& str) {
-	// Set new target to input string.
+	// Set original to exact input and new target to input string.
+	original = str;
 	process_string(str);
 	target = str;
 	if (str.empty()) return;
@@ -64,7 +65,7 @@ void CharGrid::check(string& str) {
 }
 
 ostream& operator<< (ostream& os, const CharGrid& cg) {
-	os << "Search results for " << cg.target << ":\n";
+	os << "Search results for " << cg.original << ":\n";
 	// Print the list of records.
 	if (cg.hits.empty()) {
 		os << "No matches were found.\n";
@@ -116,6 +117,7 @@ ostream& operator<< (ostream& os, const CharGrid& cg) {
 void CharGrid::reset() noexcept {
 	hits.clear();
 	target.clear();
+	original.clear();
 	for (auto& v : grid)
 		for (char& c : v) c = static_cast<char>(tolower(c));
 }
@@ -173,7 +175,7 @@ bool move_dir(size_t& row, size_t& col, Direction dir) {
 			++row;
 			--col;
 			break;
-	}	
+	}
 	return true;	
 }
 

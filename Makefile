@@ -18,4 +18,4 @@ debug : $(EXECUTABLE).cpp
 # Remove executable and all runtime outputs.
 .PHONY : clean
 clean : 
-	rm -f $(EXECUTABLE) $(EXECUTABLE)_debug *.o
+	rm -f $(EXECUTABLE) $(EXECUTABLE)_debug *.o *.txt

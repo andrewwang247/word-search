@@ -26,7 +26,7 @@ public:
 	 * The public interface function for finding all instances of str in grid
 	 * If str is found, check highlights all instance of them.
 	 * Cleans str so that it is the correct format.
-	 * MODIFIES: grid, hits, str.
+	 * MODIFIES: grid, hits, str, original.
 	 */
 	void check(std::string& str);
 
@@ -64,8 +64,8 @@ private:
 	// Stores the number of rows and columns for easy access. Effectively const.
 	size_t NUM_ROWS, NUM_COLS;
 
-	// The current target string that we are looking for.
-	std::string target;
+	// The target string that we are looking for + the original input string for printing.
+	std::string target, original;
 
 	// Processes str such that it is in the correct format for insertion.
 	void process_string(std::string& str) const;
