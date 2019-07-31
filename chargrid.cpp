@@ -25,54 +25,62 @@ CharGrid::CharGrid(ifstream& fin) {
 	NUM_ROWS = grid.size();
 }
 
-void CharGrid::check(const string& str) {
+void CharGrid::check(string& str) {
 	// Set new target to input string.
+	process_string(str);
 	target = str;
 	if (str.empty()) return;
+	
 	for (size_t row = 0; row < NUM_ROWS; ++row) {
 		for (size_t col = 0; col < NUM_COLS; ++col) {
-			if (check_dir(row, col, Direction::North))
-				highlight(row, col, Direction::North);
+			// Only continue check if the first letter is a match.
+			if ( target.front() == at(row, col) ) {
+				if (check_dir(row, col, Direction::North))
+					highlight(row, col, Direction::North);
 
-			if (check_dir(row, col, Direction::South))
-				highlight(row, col, Direction::South);
+				if (check_dir(row, col, Direction::South))
+					highlight(row, col, Direction::South);
 
-			if (check_dir(row, col, Direction::East))
-				highlight(row, col, Direction::East);
+				if (check_dir(row, col, Direction::East))
+					highlight(row, col, Direction::East);
 
-			if (check_dir(row, col, Direction::West))
-				highlight(row, col, Direction::West);
+				if (check_dir(row, col, Direction::West))
+					highlight(row, col, Direction::West);
 
-			if (check_dir(row, col, Direction::NorthEast))
-				highlight(row, col, Direction::NorthEast);
+				if (check_dir(row, col, Direction::NorthEast))
+					highlight(row, col, Direction::NorthEast);
 
-			if (check_dir(row, col, Direction::NorthWest))
-				highlight(row, col, Direction::NorthWest);
+				if (check_dir(row, col, Direction::NorthWest))
+					highlight(row, col, Direction::NorthWest);
 
-			if (check_dir(row, col, Direction::SouthEast))
-				highlight(row, col, Direction::SouthEast);
+				if (check_dir(row, col, Direction::SouthEast))
+					highlight(row, col, Direction::SouthEast);
 
-			if (check_dir(row, col, Direction::SouthWest))
-				highlight(row, col, Direction::SouthWest);
+				if (check_dir(row, col, Direction::SouthWest))
+					highlight(row, col, Direction::SouthWest);
+			}
 		}
 	}
 }
 
 ostream& operator<< (ostream& os, const CharGrid& cg) {
 	os << "Search results for " << cg.target << ":\n";
-	// Print out the grid.
-	string buffer;
-	for_each(cg.grid.begin(), cg.grid.end(), [&buffer](const vector<char>& v){
-		buffer.append(v.begin(), v.end());
-		buffer.push_back('\n');
-	});
-	os << buffer;
 	// Print the list of records.
 	if (cg.hits.empty()) {
 		os << "No matches were found.\n";
 	} else {
+		// Print out the grid.
+		string buffer;
+		for_each(cg.grid.begin(), cg.grid.end(), [&buffer](const vector<char>& v){
+			for_each(v.begin(), v.end(), [&buffer](char c){
+				buffer.push_back(c);
+				buffer.push_back(' ');
+			});
+			buffer.push_back('\n');
+		});
+		os << buffer;
 		for_each(cg.hits.begin(), cg.hits.end(), [&os](const CharGrid::Record& rec) {
-			os << "Row " << rec.row << ", Column " << rec.col << ", Heading ";
+			os << "Row " << rec.row + 1 << ", Column " << rec.col + 1 << ", Heading ";
 			switch (rec.dir) {
 				case Direction::North:
 					os << "North.\n";
@@ -106,7 +114,6 @@ ostream& operator<< (ostream& os, const CharGrid& cg) {
 }
 
 void CharGrid::reset() noexcept {
-	NUM_ROWS = NUM_COLS = 0;
 	hits.clear();
 	target.clear();
 	for (auto& v : grid)
@@ -169,6 +176,7 @@ bool move_dir(size_t& row, size_t& col, Direction dir) {
 	}	
 	return true;	
 }
+
 bool CharGrid::check_dir(size_t row, size_t col, Direction dir) const {
 	// Get iterator to first letter in target.
 	string::const_iterator it ( target.begin() );
@@ -176,18 +184,20 @@ bool CharGrid::check_dir(size_t row, size_t col, Direction dir) const {
 		// Checked to the end of the target, it's a match.
 		if ( it == target.end() ) return true;
 		// If the letters don't match, immediately toss out.
-		if (*it++ != at(row, col) ) return false;
-		// Move in the direction and check for any out of bounds.
-		if (!move_dir(row, col, dir)) return false;		
+		if (*it++ != static_cast<char>( tolower( at(row, col) ) ) ) return false;
+		// Move in direction. If out-of-bounds, see whether it's a full match.
+		if ( !move_dir(row, col, dir) ) return it == target.end();		
 	} while ( row < NUM_ROWS && col < NUM_COLS );
 	// There is a match if we've made it to the end of the line.
 	return it == target.end();
 }
 
 void CharGrid::highlight(size_t row, size_t col, Direction dir) {
+	size_t i = 0;
+	size_t row_original = row, col_original = col;
 	do {
-		grid.at(row).at(col) = static_cast<char>(toupper(grid.at(row).at(col)));
-		if (!move_dir(row, col, dir)) return;
-	} while (row < NUM_ROWS && col < NUM_COLS );
-	hits.push_back( {row, col, dir} );
+		grid.at(row).at(col) = static_cast<char>( toupper( at(row, col) ) );
+		move_dir(row, col, dir);
+	} while (++i < target.length() && row < NUM_ROWS && col < NUM_COLS );
+	hits.push_back( {row_original, col_original, dir} );
 }

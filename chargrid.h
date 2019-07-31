@@ -25,9 +25,10 @@ public:
 	/**
 	 * The public interface function for finding all instances of str in grid
 	 * If str is found, check highlights all instance of them.
-	 * MODIFIES: grid, hits.
+	 * Cleans str so that it is the correct format.
+	 * MODIFIES: grid, hits, str.
 	 */
-	void check(const std::string& str);
+	void check(std::string& str);
 
 	/**
 	 * Prints to output stream os. Format as follows.
