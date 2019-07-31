@@ -3,11 +3,12 @@ CXX = g++
 CXX_FLAGS = -std=c++1z -Wconversion -Wall -Werror -Wextra -pedantic
 OPT = -O3 -DNDEBUG
 DEBUG = -g3 -DDEBUG
+
 EXECUTABLE = wordsearch
 OBJECTFILES = chargrid.cpp
 
 # Build optimized executable.
-scrabble : $(EXECUTABLE).cpp
+release : $(EXECUTABLE).cpp
 	$(CXX) $(CXX_FLAGS) $(OPT) $(EXECUTABLE).cpp $(OBJECTFILES) -o $(EXECUTABLE)
 
 # Build with debug features.
