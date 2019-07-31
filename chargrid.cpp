@@ -5,6 +5,36 @@
 #include <exception>
 using namespace std;
 
+std::ostream& operator<< (std::ostream& os, Direction dir) {
+	switch (dir) {
+		case Direction::North:
+			os << "North";
+			break;
+		case Direction::South:
+			os << "South";
+			break;
+		case Direction::East:
+			os << "East";
+			break;
+		case Direction::West:
+			os << "West";
+			break;
+		case Direction::NorthEast:
+			os << "NorthEast";
+			break;
+		case Direction::NorthWest:
+			os << "NorthWest";
+			break;
+		case Direction::SouthEast:
+			os << "SouthEast";
+			break;
+		case Direction::SouthWest:
+			os << "SouthWest";
+			break;
+	}
+	return os;
+}
+
 CharGrid::CharGrid(ifstream& fin) {
 	// Get the first line.
 	string line;
@@ -72,43 +102,17 @@ ostream& operator<< (ostream& os, const CharGrid& cg) {
 	} else {
 		// Print out the grid.
 		string buffer;
-		for_each(cg.grid.begin(), cg.grid.end(), [&buffer](const vector<char>& v){
-			for_each(v.begin(), v.end(), [&buffer](char c){
+		for( const auto& v : cg.grid)  {
+			for( char c : v ) {
 				buffer.push_back(c);
 				buffer.push_back(' ');
-			});
-			buffer.push_back('\n');
-		});
-		os << buffer;
-		for_each(cg.hits.begin(), cg.hits.end(), [&os](const CharGrid::Record& rec) {
-			os << "Row " << rec.row + 1 << ", Column " << rec.col + 1 << ", Heading ";
-			switch (rec.dir) {
-				case Direction::North:
-					os << "North.\n";
-					break;
-				case Direction::South:
-					os << "South.\n";
-					break;
-				case Direction::East:
-					os << "East.\n";
-					break;
-				case Direction::West:
-					os << "West.\n";
-					break;
-				case Direction::NorthEast:
-					os << "NorthEast.\n";
-					break;
-				case Direction::NorthWest:
-					os << "NorthWest.\n";
-					break;
-				case Direction::SouthEast:
-					os << "SouthEast.\n";
-					break;
-				case Direction::SouthWest:
-					os << "SouthWest.\n";
-					break;
 			}
-		});
+			buffer.push_back('\n');
+		}
+		os << buffer;
+		for( const auto& rec : cg.hits ) {
+			os << "Row " << rec.row + 1 << ", Column " << rec.col + 1 << ", Heading " << rec.dir << ".\n";
+		}
 	}
 	os << endl;
 	return os;
@@ -126,7 +130,7 @@ void CharGrid::process_string(string& str) const {
 	// Get rid of all non alphabetic characters in the string
 	str.erase( remove_if(str.begin(), str.end(), [](char c){ return !isalpha(c); }), str.end());
 	// Convert all letters in the string to lowercase.
-	for_each(str.begin(), str.end(), [](char& c){ c = static_cast<char>(tolower(c)); });
+	for( char& c : str ) c = static_cast<char>(tolower(c));
 }
 
 inline char CharGrid::at(size_t row, size_t col) const {

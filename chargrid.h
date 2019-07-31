@@ -10,6 +10,9 @@ enum class Direction {
 	North, South, East, West, NorthEast, NorthWest, SouthEast, SouthWest
 };
 
+// Print operator for Directions
+std::ostream& operator<< (std::ostream& os, Direction cg);
+
 /**
  * The CharGrid class holds the word search space containing the letter to be searched.
  * It allows for quick character retrieval and toggling of upper/lower cases.
