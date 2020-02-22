@@ -6,7 +6,7 @@
 # not add to version control.
 
 # Custom ignores for this project.
-
+wordsearch
 
 # Exectuables and debug files.
 *.exe

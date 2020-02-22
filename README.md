@@ -1,8 +1,11 @@
 # Word Search
 
 The word search program takes in a grid as a text file and queries the user for a list of words to search. For each word, the program searches for and logs every possible match in the grid. When finished, the user receives (for each word):
+
 - A formatted grid with all instances of the word highlighted.
+
 - A listing of every match that includes the row/column coordinates of the first letter and the directional orientation of the rest of the word.
+
 Suggested usage: ./wordsearch word_grid.txt < target_words.txt > results.txt
 
 ## Approach

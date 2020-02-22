@@ -5,18 +5,18 @@ OPT = -O3 -DNDEBUG
 DEBUG = -g3 -DDEBUG
 
 EXECUTABLE = wordsearch
-OBJECTFILES = chargrid.cpp
+LINKEDFILES = chargrid
 
 # Build optimized executable.
-release : $(EXECUTABLE).cpp $(OBJECTFILES)
-	$(CXX) $(CXX_FLAGS) $(OPT) $(EXECUTABLE).cpp $(OBJECTFILES) -o $(EXECUTABLE)
+release : $(EXECUTABLE).cpp $(LINKEDFILES).cpp
+	$(CXX) $(CXX_FLAGS) $(OPT) $(EXECUTABLE).cpp $(LINKEDFILES).cpp -o $(EXECUTABLE)
 
 # Build with debug features.
-debug : $(EXECUTABLE).cpp $(OBJECTFILES)
-	$(CXX) $(CXX_FLAGS) $(DEBUG) $(EXECUTABLE).cpp $(OBJECTFILES) -o $(EXECUTABLE)_debug
+debug : $(EXECUTABLE).cpp $(LINKEDFILES)
+	$(CXX) $(CXX_FLAGS) $(DEBUG) $(EXECUTABLE).cpp $(LINKEDFILES).cpp -o $(EXECUTABLE)_debug
 
 
 # Remove executable and all runtime outputs.
 .PHONY : clean
 clean : 
-	rm -f $(EXECUTABLE) $(EXECUTABLE)_debug *.o *.txt
+	rm -f $(EXECUTABLE) $(EXECUTABLE)_debug *.txt
