@@ -1,22 +1,22 @@
 # Personal Makefile for Word Search.
-CXX = g++
-CXX_FLAGS = -std=c++1z -Wconversion -Wall -Werror -Wextra -pedantic
-OPT = -O3 -DNDEBUG
-DEBUG = -g3 -DDEBUG
+CXX := g++ -std=c++17
+CXX_FLAGS := -Wall -Werror -Wextra -Wconversion -pedantic -Wfloat-equal -Wduplicated-branches -Wduplicated-cond -Wshadow -Wdouble-promotion -Wundef 
+OPT := -O3 -DNDEBUG
+DEBUG := -g3 -DDEBUG
 
 EXECUTABLE = wordsearch
-LINKEDFILES = chargrid
+LINKEDFILE = chargrid
 
 # Build optimized executable.
-release : $(EXECUTABLE).cpp $(LINKEDFILES).cpp
-	$(CXX) $(CXX_FLAGS) $(OPT) $(EXECUTABLE).cpp $(LINKEDFILES).cpp -o $(EXECUTABLE)
+release : $(EXECUTABLE).cpp $(LINKEDFILE).cpp
+	$(CXX) $(CXX_FLAGS) $(OPT) $(EXECUTABLE).cpp $(LINKEDFILE).cpp -o $(EXECUTABLE)
 
 # Build with debug features.
-debug : $(EXECUTABLE).cpp $(LINKEDFILES)
-	$(CXX) $(CXX_FLAGS) $(DEBUG) $(EXECUTABLE).cpp $(LINKEDFILES).cpp -o $(EXECUTABLE)_debug
+debug : $(EXECUTABLE).cpp $(LINKEDFILE)
+	$(CXX) $(CXX_FLAGS) $(DEBUG) $(EXECUTABLE).cpp $(LINKEDFILE).cpp -o $(EXECUTABLE)
 
 
 # Remove executable and all runtime outputs.
 .PHONY : clean
 clean : 
-	rm -f $(EXECUTABLE) $(EXECUTABLE)_debug *.txt
+	rm -f $(EXECUTABLE) *.txt
